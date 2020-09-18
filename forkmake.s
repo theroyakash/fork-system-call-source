@@ -10,7 +10,7 @@ _getDetailsIfOperationIsForked:         ## @getDetailsIfOperationIsForked
 	.cfi_offset %rbp, -16
 	movq	%rsp, %rbp
 	.cfi_def_cfa_register %rbp
-	subq	$32, %rsp
+	subq	$16, %rsp
 	callq	_fork
 	cmpl	$0, %eax
 	jne	LBB0_2
@@ -18,46 +18,38 @@ _getDetailsIfOperationIsForked:         ## @getDetailsIfOperationIsForked
 	leaq	L_.str(%rip), %rdi
 	movb	$0, %al
 	callq	_printf
-	movl	%eax, -8(%rbp)          ## 4-byte Spill
+	movl	%eax, -4(%rbp)          ## 4-byte Spill
 	callq	_getpid
-	movl	%eax, -12(%rbp)         ## 4-byte Spill
-	callq	_getppid
 	leaq	L_.str.1(%rip), %rdi
-	movl	-12(%rbp), %esi         ## 4-byte Reload
-	movl	%eax, %edx
-	movb	$0, %al
-	callq	_printf
-	leaq	L_.str.2(%rip), %rdi
-	movl	%eax, -16(%rbp)         ## 4-byte Spill
-	movb	$0, %al
-	callq	_printf
-	leaq	L_.str.3(%rip), %rdi
-	leaq	-4(%rbp), %rsi
-	movl	%eax, -20(%rbp)         ## 4-byte Spill
-	movb	$0, %al
-	callq	_scanf
-	movl	-4(%rbp), %esi
-	leaq	L_.str.4(%rip), %rdi
-	movl	%eax, -24(%rbp)         ## 4-byte Spill
-	movb	$0, %al
-	callq	_printf
-	jmp	LBB0_3
-LBB0_2:
-	leaq	L_.str.5(%rip), %rdi
-	movb	$0, %al
-	callq	_printf
-	movl	%eax, -28(%rbp)         ## 4-byte Spill
-	callq	_getpid
-	leaq	L_.str.6(%rip), %rdi
 	movl	%eax, %esi
 	movb	$0, %al
 	callq	_printf
-	leaq	L_.str.7(%rip), %rdi
-	movl	%eax, -32(%rbp)         ## 4-byte Spill
+	xorl	%ecx, %ecx
+                                        ## kill: def $rcx killed $ecx
+	leaq	L_.str.2(%rip), %rdx
+	movq	%rdx, %rdi
+	movq	%rdx, %rsi
+	leaq	L_.str.3(%rip), %rdx
+	movl	%eax, -8(%rbp)          ## 4-byte Spill
+	movb	$0, %al
+	callq	_execlp
+	jmp	LBB0_3
+LBB0_2:
+	leaq	L_.str.4(%rip), %rdi
+	movb	$0, %al
+	callq	_printf
+	movl	%eax, -12(%rbp)         ## 4-byte Spill
+	callq	_getpid
+	leaq	L_.str.5(%rip), %rdi
+	movl	%eax, %esi
+	movb	$0, %al
+	callq	_printf
+	leaq	L_.str.6(%rip), %rdi
+	movl	%eax, -16(%rbp)         ## 4-byte Spill
 	movb	$0, %al
 	callq	_printf
 LBB0_3:
-	addq	$32, %rsp
+	addq	$16, %rsp
 	popq	%rbp
 	retq
 	.cfi_endproc
@@ -86,24 +78,21 @@ L_.str:                                 ## @.str
 	.asciz	"\n******* CHILD PROCESS *******\n"
 
 L_.str.1:                               ## @.str.1
-	.asciz	"This Process ID is %d and Parent ID is %d"
+	.asciz	"This Process ID is %d\n"
 
 L_.str.2:                               ## @.str.2
-	.asciz	"Parent task waits until your child is terminated.\nTo terminate the child task enter a number:\n"
+	.asciz	"ls"
 
 L_.str.3:                               ## @.str.3
-	.asciz	"%d"
+	.asciz	"-al"
 
 L_.str.4:                               ## @.str.4
-	.asciz	"You gave me a number which is %d\n Your child process is now terminated, now its time for the parent process\n\n"
-
-L_.str.5:                               ## @.str.5
 	.asciz	"\n******* PARENT PROCESS *******\n"
 
-L_.str.6:                               ## @.str.6
+L_.str.5:                               ## @.str.5
 	.asciz	"This Process ID %d"
 
-L_.str.7:                               ## @.str.7
+L_.str.6:                               ## @.str.6
 	.asciz	"Parent process is now terminated thank you.\n\n"
 
 .subsections_via_symbols

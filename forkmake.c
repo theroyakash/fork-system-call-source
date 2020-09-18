@@ -17,14 +17,11 @@
 void getDetailsIfOperationIsForked(){
     if (fork() == 0){
         printf("\n******* CHILD PROCESS *******\n");
-        printf("This Process ID is %d and Parent ID is %d", getpid(), getppid());
-        printf("Parent task waits until your child is terminated.\nTo terminate the child task enter a number:\n");
-        int n;
-        scanf("%d", &n);
-        printf("You gave me a number which is %d\n Your child process is now terminated, now its time for the parent process\n\n", n);
+        printf("This Process ID is %d\n", getpid());
+        execlp("ls", "ls", "-al", NULL);
         
     }else{
-        //wait();
+        // wait();
         printf("\n******* PARENT PROCESS *******\n");
         printf("This Process ID %d", getpid());
         printf("Parent process is now terminated thank you.\n\n");
