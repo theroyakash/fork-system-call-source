@@ -1,3 +1,15 @@
+/**
+ * @file
+ * @author [theroyakash](https://www.iamroyakash.com/)
+ * @brief Implementation of
+ * OS Fork commands
+ *
+ * @details
+ * Implementation of the program  utilizing fork OS system call.
+ * Compiled on macOS Big Sur version 11.0 Beta (20A5364e)
+ */
+
+
 #include <stdio.h>
 #include <sys/types.h>
 #include <unistd.h>
