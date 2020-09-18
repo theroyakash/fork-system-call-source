@@ -13,20 +13,12 @@ _main:                                  ## @main
 	subq	$16, %rsp
 	movl	$0, -4(%rbp)
 	callq	_fork
-	cmpl	$0, %eax
-	je	LBB0_3
-## %bb.1:
-	callq	_fork
-	cmpl	$0, %eax
-	je	LBB0_3
-## %bb.2:
-	callq	_fork
-LBB0_3:
 	leaq	L_.str(%rip), %rdi
+	movl	%eax, -8(%rbp)          ## 4-byte Spill
 	movb	$0, %al
 	callq	_printf
 	xorl	%ecx, %ecx
-	movl	%eax, -8(%rbp)          ## 4-byte Spill
+	movl	%eax, -12(%rbp)         ## 4-byte Spill
 	movl	%ecx, %eax
 	addq	$16, %rsp
 	popq	%rbp
@@ -35,6 +27,6 @@ LBB0_3:
                                         ## -- End function
 	.section	__TEXT,__cstring,cstring_literals
 L_.str:                                 ## @.str
-	.asciz	"Hello world"
+	.asciz	"Hello world!\n"
 
 .subsections_via_symbols
