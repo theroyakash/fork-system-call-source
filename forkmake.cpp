@@ -4,7 +4,7 @@
 int main(){
     if (fork() && fork()){
         fork();
-        printf("Hello world");
     }
+    printf("Hello world");
     return 0;
 }
