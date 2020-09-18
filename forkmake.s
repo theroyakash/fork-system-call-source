@@ -1,5 +1,5 @@
 	.section	__TEXT,__text,regular,pure_instructions
-	.build_version macos, 10, 15	sdk_version 10, 15
+	.build_version macos, 10, 15, 6	sdk_version 10, 15, 6
 	.globl	_main                   ## -- Begin function main
 	.p2align	4, 0x90
 _main:                                  ## @main
@@ -21,13 +21,13 @@ _main:                                  ## @main
 	je	LBB0_3
 ## %bb.2:
 	callq	_fork
+LBB0_3:
 	leaq	L_.str(%rip), %rdi
-	movl	%eax, -8(%rbp)          ## 4-byte Spill
 	movb	$0, %al
 	callq	_printf
-	movl	%eax, -12(%rbp)         ## 4-byte Spill
-LBB0_3:
-	xorl	%eax, %eax
+	xorl	%ecx, %ecx
+	movl	%eax, -8(%rbp)          ## 4-byte Spill
+	movl	%ecx, %eax
 	addq	$16, %rsp
 	popq	%rbp
 	retq
@@ -36,6 +36,5 @@ LBB0_3:
 	.section	__TEXT,__cstring,cstring_literals
 L_.str:                                 ## @.str
 	.asciz	"Hello world"
-
 
 .subsections_via_symbols
